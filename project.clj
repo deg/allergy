@@ -18,7 +18,8 @@
                  [weasel "0.4.0-SNAPSHOT"]
                  [leiningen "2.5.0"]]
 
-  :plugins [[lein-cljsbuild "1.0.3"]
+  :plugins [[cider/cider-nrepl "0.8.1"]
+            [lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]]
 
   :min-lein-version "2.5.0"
