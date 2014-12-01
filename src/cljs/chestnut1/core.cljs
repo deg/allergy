@@ -4,7 +4,7 @@
 
 ;; (defonce app-state (atom {:text "Hello Chestnut!"}))
 
-;; (defn main [])
+(defn main [])
 
 
 (def app-state
