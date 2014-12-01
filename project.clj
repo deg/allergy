@@ -12,6 +12,7 @@
                  [compojure "1.2.0"]
                  [enlive "1.1.5"]
                  [om "0.7.3"]
+                 [reagent "0.4.3"]
                  [figwheel "0.1.4-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
@@ -31,6 +32,7 @@
                                         :output-dir    "resources/public/js/out"
                                         :source-map    "resources/public/js/out.js.map"
                                         :preamble      ["react/react.min.js"]
+                                        ;; :preamble      ["reagent/react.js"]
                                         :externs       ["react/externs/react.js"]
                                         :optimizations :none
                                         :pretty-print  true}}}}
