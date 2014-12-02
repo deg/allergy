@@ -52,10 +52,10 @@
   [:div
     [:div.page-header [:h1 "Reagent Form"]]
 
-    [text-input :first-name "First name"]
-    [text-input :last-name "First name"]
+    [text-input :first-name "First name:"]
+    [text-input :last-name "Last name:"]
 
-    [selection-list :favorite-drinks "Favorite drinks"
+    [selection-list :favorite-drinks "Favorite drinks:"
      [:coffee "Coffee"]
      [:beer "Beer"]
      [:crab-juice "Crab juice"]]
