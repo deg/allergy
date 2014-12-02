@@ -2,51 +2,69 @@
   (:require [clojure.string :as string]
             [reagent.core :as r]))
 
-;; (defonce app-state (atom {:text "Hello Chestnut!"}))
-
-(defn main [])
+;; (defn main [])
 
 
-(def app-state
-  (r/atom
-   {:contacts
-    [{:first "Ben" :last "Bitdiddle" :email "benb@mit.edu"}
-     {:first "Alyssa" :middle-initial "P" :last "Hacker" :email "aphacker@mit.edu"}
-     {:first "Eva" :middle "Lu" :last "Ator" :email "eval@mit.edu"}
-     {:first "Louis" :last "Reasoner" :email "prolog@mit.edu"}
-     {:first "Cy" :middle-initial "D" :last "Effect" :email "bugs@mit.edu"}
-     {:first "Lem" :middle-initial "E" :last "Tweakit" :email "morebugs@mit.edu"}]}))
+(def state (r/atom {:doc {} :saved? false}))
 
-(defn update-contacts! [f & args]
-  (apply swap! app-state update-in [:contacts] f args))
+(defn set-value! [id value]
+  (swap! state assoc :saved? false)
+  (swap! state assoc-in [:doc id] value))
 
-(defn add-contact! [c]
-  (update-contacts! conj c))
+(defn get-value [id]
+  (get-in @state [:doc id]))
 
-(defn remove-contact! [c]
-  (update-contacts! (fn [cs]
-                      (vec (remove #(= % c) cs)))
-                    c))
+(defn list-item [id k v selections]
+  (letfn [(handle-click! []
+            (swap! selections update-in [k] not)
+            (set-value! id (->> @selections
+                                (filter second)
+                                (map first))))]
+    [:li {:class (str "list-group-item"
+                      (if (k @selections) " active"))
+          :on-click handle-click!}
+     v]))
 
-(defn some-component []
+(defn selection-list [id label & items]
+  (let [selections (->> items (map (fn [[k]] [k false])) (into {}) r/atom)]    
+    (fn []
+      [:div.row
+       [:div.col-md-2 [:span label]]
+       [:div.col-md-5
+        [:div.row
+         (for [[k v] items]
+           [list-item id k v selections])]]])))
+
+(defn row [label & body]
+  [:div.row
+   [:div.col-md-2 [:span label]]
+   [:div.col-md-3 body]])
+
+(defn text-input [id label]
+  [row label
+   [:input
+     {:type "text"
+       :class "form-control"
+       :value (get-value id)
+       :on-change #(set-value! id (-> % .-target .-value))}]])
+
+(defn home []
   [:div
-   [:h3 "I am a component!"]
-   [:p.someclass
-    "I have " [:strong "bold"]
-    [:span {:style {:color "red"}} " and red"]
-    " text."]])
+    [:div.page-header [:h1 "Reagent Form"]]
 
-(defn calling-component []
-  [:div "Parent component"
-   [some-component]])
+    [text-input :first-name "First name"]
+    [text-input :last-name "First name"]
 
-(defn child [name]
-  [:p "Hi, I am " name])
+    [selection-list :favorite-drinks "Favorite drinks"
+     [:coffee "Coffee"]
+     [:beer "Beer"]
+     [:crab-juice "Crab juice"]]
 
-(defn childcaller []
-  [child "Foo Bar"])
+    [:button {:type "submit"
+              :class "btn btn-default"
+              :onClick #(.log js/console (clj->js @state))}
+     "Submit"]])
 
-(defn mountit []
-  (r/render-component [childcaller]
-                      (.getElementById js/document "app")
-                      #_(.-body js/document)))
+(defn main []
+  (r/render-component [home]
+                      (.getElementById js/document "app")))
