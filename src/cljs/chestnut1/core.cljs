@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]
             [json-html.core :refer [edn->hiccup]]
             [reagent.core :as r]
-            [reagent-forms.core :refer [bind-fields init-field value-of]]))
+            [reagent-forms.core :as forms]))
 
 
 ;; (def state (r/atom {:doc {} :saved? false}))
@@ -202,7 +202,7 @@
       [:div
        [:div.page-header [:h1 "Sample Form"]]
 
-       [bind-fields
+       [forms/bind-fields
         form-template
         doc
         (fn [[id] value {:keys [weight-lb weight-kg] :as document}]
