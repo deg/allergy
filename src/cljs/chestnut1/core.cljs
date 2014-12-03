@@ -85,8 +85,8 @@
 
 (defn row [label input]
   [:div.row
-   [:div.col-md-2 [:label label]]
-   [:div.col-md-5 input]])
+   [:div.col-xs-2 [:label label]]
+   [:div.col-xs-10 input]])
 
 (defn radio [label id name value]
   [:div.radio
@@ -101,16 +101,17 @@
   [:div
    (input "first name" :text :person.first-name)
    [:div.row
-    [:div.col-md-2]
-    [:div.col-md-5
+    [:div.col-xs-2]
+    [:div.col-xs-10
      [:div.alert.alert-danger
-      {:field :alert :id :errors.first-name}]]]
+      {:field :alert :id :person.first-name :event empty?}
+      "First name is empty"]]]
 
    (input "last name" :text :person.last-name)
    [:div.row
-    [:div.col-md-2]
-    [:div.col-md-5
-     [:div.alert.alert-success
+    [:div.col-xs-2]
+    [:div.col-xs-10
+     [:div.alert.alert-danger
       {:field :alert :id :person.last-name :event empty?}
       "last name is empty!"]]]
 
