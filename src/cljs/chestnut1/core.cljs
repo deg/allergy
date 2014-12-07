@@ -19,26 +19,41 @@
 (defn input [label type id]
   (row label [:input.form-control {:field type :id id}]))
 
+(defn bad-email? [s]
+  ;; Derived from http://www.dotnet-tricks.com/Tutorial/javascript/UNDS040712-JavaScript-Email-Address-validation-using-Regular-Expression.html
+  (not (.exec (js/RegExp. "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$") s)))
+
+(defn errmsg-bar [id event message]
+  [:div.row
+   [:div.col-xs-2]
+   [:div.col-xs-10
+    [:div.alert.alert-danger
+     {:field :alert :id id :event event}
+     message]]])
+
+(defn errchecked-input [label type id & err-handlers]
+  [:div
+   (input label type id)
+   (doall (map #(apply errmsg-bar id %) (partition 2 err-handlers)))])
+
 (def form-template
   [:div
-   (input "first name" :text :person.first-name)
-   [:div.row
-    [:div.col-xs-2]
-    [:div.col-xs-10
-     [:div.alert.alert-danger
-      {:field :alert :id :person.first-name :event empty?}
-      "First name is empty"]]]
 
-   (input "last name" :text :person.last-name)
-   [:div.row
-    [:div.col-xs-2]
-    [:div.col-xs-10
-     [:div.alert.alert-danger
-      {:field :alert :id :person.last-name :event empty?}
-      "last name is empty!"]]]
+   (errchecked-input "first name" :text :person.first-name
+                     empty? "First name is empty"
+                     #(< (js/parseInt %) 18) "You must be over 18"
+                     #(= % "John") "No johns allowed here")
 
-   (input "age" :numeric :person.age)
-   (input "email" :email :person.email)
+   (errchecked-input "last name" :text :person.last-name
+                     empty?  "Last name is empty!")
+
+   (errchecked-input "age" :numeric :person.age
+                     #(empty? (str %)) "Please supply your age"
+                     #(< % 18) "You must be over 18"
+                     #(>= % 100) "Sorry, too old to play")
+
+   (errchecked-input "email" :email :person.email
+                     bad-email? "Invalid email address")
    (row
     "comments"
     [:textarea.form-control
