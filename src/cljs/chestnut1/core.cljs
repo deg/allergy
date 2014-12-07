@@ -121,6 +121,12 @@
     [:li.list-group-item {:key :bar} "bar"]
     [:li.list-group-item {:key :baz} "baz"]]])
 
+(defn guts-dom [doc]
+  [:div
+   [:hr]
+   [:h1 "Document State"]
+   [edn->hiccup @doc]])
+
 (defn page []
   (let [doc (r/atom {:person {:first-name "John"
                               :age 35
@@ -157,11 +163,8 @@
          {:on-click
           #(if (empty? (get-in @doc [:person :first-name]))
              (swap! doc assoc-in [:errors :first-name]"first name is empty"))}
-         "save"]
-
-       [:hr]
-       [:h1 "Document State"]
-       [edn->hiccup @doc]])))
+        (guts-dom doc)
+        "save"]])))
 
 (defn main []
   (r/render-component [page] (.getElementById js/document "app")))
