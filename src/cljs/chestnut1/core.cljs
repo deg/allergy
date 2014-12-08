@@ -38,22 +38,6 @@
 
 (def form-template
   [:div
-
-   (errchecked-input "first name" :text :person.first-name
-                     empty? "First name is empty"
-                     #(< (js/parseInt %) 18) "You must be over 18"
-                     #(= % "John") "No johns allowed here")
-
-   (errchecked-input "last name" :text :person.last-name
-                     empty?  "Last name is empty!")
-
-   (errchecked-input "age" :numeric :person.age
-                     #(empty? (str %)) "Please supply your age"
-                     #(< % 18) "You must be over 18"
-                     #(>= % 100) "Sorry, too old to play")
-
-   (errchecked-input "email" :email :person.email
-                     bad-email? "Invalid email address")
    (row
     "comments"
     [:textarea.form-control
@@ -80,9 +64,9 @@
      :placeholder "N/A"
      :id :awesomeness}]
 
-   [:input {:field :range :min 1 :max 10 :id :awesomeness}]
+   ;; [:input {:field :range :min 1 :max 10 :id :awesomeness}]
 
-   [:h3 "option list"]
+   ;; [:h3 "option list"]
    [:div.form-group
     [:label "pick an option"]
     [:select.form-control {:field :list :id :many.options}
@@ -97,29 +81,51 @@
     "Option two can be something else and selecting it will deselect option one"
     :radioselection :foo :b)
 
-   [:h3 "multi-select buttons"]
+   ;; [:h3 "multi-select buttons"]
    [:div.btn-group {:field :multi-select :id :every.position}
     [:button.btn.btn-default {:key :left} "Left"]
     [:button.btn.btn-default {:key :middle} "Middle"]
     [:button.btn.btn-default {:key :right} "Right"]]
 
-   [:h3 "single-select buttons"]
+   ;; [:h3 "single-select buttons"]
    [:div.btn-group {:field :single-select :id :unique.position}
     [:button.btn.btn-default {:key :left} "Left"]
     [:button.btn.btn-default {:key :middle} "Middle"]
-    [:button.btn.btn-default {:key :right} "Right"]]
+    [:button.btn.btn-default {:key :right} "Right"]]])
 
-   [:h3 "single-select list"]
-   [:div.list-group {:field :single-select :id :pick-one}
-    [:div.list-group-item {:key :foo} "foo"]
-    [:div.list-group-item {:key :bar} "bar"]
-    [:div.list-group-item {:key :baz} "baz"]]
 
-   [:h3 "multi-select list"]
-   [:ul.list-group {:field :multi-select :id :pick-a-few}
-    [:li.list-group-item {:key :foo} "foo"]
-    [:li.list-group-item {:key :bar} "bar"]
-    [:li.list-group-item {:key :baz} "baz"]]])
+(defn header-dom [doc]
+  [:h1 "My web page"])
+
+(defn menu-dom [doc]
+   [:div.btn-group {:field :single-select :id :menu-page}
+    [:button.btn.btn-default {:key :app} "App"]
+    [:button.btn.btn-default {:key :user} "User"]
+    [:button.btn.btn-default {:key :guts} "Guts"]])
+
+
+(defn app-dom [doc]
+  [:div
+   [:h1 "I am the app; I am the walrus"]])
+
+
+(defn user-dom [doc]
+  [:div
+   (errchecked-input "first name" :text :person.first-name
+                     empty? "First name is empty"
+                     #(< (js/parseInt %) 18) "You must be over 18"
+                     #(= % "John") "No johns allowed here")
+
+   (errchecked-input "last name" :text :person.last-name
+                     empty?  "Last name is empty!")
+
+   (errchecked-input "age" :numeric :person.age
+                     #(empty? (str %)) "Please supply your age"
+                     #(< % 18) "You must be over 18"
+                     #(>= % 100) "Sorry, too old to play")
+
+   (errchecked-input "email" :email :person.email
+                     bad-email? "Invalid email address")])
 
 (defn guts-dom [doc]
   [:div
@@ -127,44 +133,58 @@
    [:h1 "Document State"]
    [edn->hiccup @doc]])
 
+(defn other-dom [doc]
+  [:div
+   [:h1 "I am the other"]])
+
+(defn get-page-dom [key]
+  (case key
+    :app app-dom
+    :user user-dom
+    :guts guts-dom))
+
+(def doc (r/atom {:person {:first-name "John"
+                           :age 35
+                           :email "foo@bar.baz"}
+                  :weight 100
+                  :height 200
+                  :bmi 0.5
+                  :comments "some interesting comments\non this subject"
+                  :radioselection :b
+                  :position [:left :right]
+                  :pick-one :bar
+                  :unique {:position :middle}
+                  :pick-a-few [:bar :baz]
+                  :many {:options :bar}
+                  :menu-page :guts}))
+
 (defn page []
-  (let [doc (r/atom {:person {:first-name "John"
-                              :age 35
-                              :email "foo@bar.baz"}
-                     :weight 100
-                     :height 200
-                     :bmi 0.5
-                     :comments "some interesting comments\non this subject"
-                     :radioselection :b
-                     :position [:left :right]
-                     :pick-one :bar
-                     :unique {:position :middle}
-                     :pick-a-few [:bar :baz]
-                     :many {:options :bar}})]
-    (fn []
+  (fn []
+    [:div
+     [forms/bind-fields
       [:div
-       [:div.page-header [:h1 "Sample Form"]]
+       (header-dom doc)
+       (menu-dom doc)
+       form-template]
+      doc
+      (fn [[id] value {:keys [weight-lb weight-kg] :as document}]
+        (cond
+         (= id :weight-lb)
+         (assoc document :weight-kg (/ value 2.2046))
+         (= id :weight-kg)
+         (assoc document :weight-lb (* value 2.2046))
+         (= id :menu-page)
+         (assoc document :menu-page value)
+         :else nil))
+      (fn [[id] value {:keys [height weight] :as document}]
+        (when (and (some #{id} [:height :weight]) weight height)
+          (assoc document :bmi (/ weight (* height height)))))]
 
-       [forms/bind-fields
-        form-template
-        doc
-        (fn [[id] value {:keys [weight-lb weight-kg] :as document}]
-           (cond
-            (= id :weight-lb)
-            (assoc document :weight-kg (/ value 2.2046))
-            (= id :weight-kg)
-            (assoc document :weight-lb (* value 2.2046))
-            :else nil))
-        (fn [[id] value {:keys [height weight] :as document}]
-          (when (and (some #{id} [:height :weight]) weight height)
-            (assoc document :bmi (/ weight (* height height)))))]
-
-       [:button.btn.btn-default
-         {:on-click
-          #(if (empty? (get-in @doc [:person :first-name]))
-             (swap! doc assoc-in [:errors :first-name]"first name is empty"))}
-        (guts-dom doc)
-        "save"]])))
+     [:button.btn.btn-default
+      {:on-click
+       #(if (empty? (get-in @doc [:person :first-name]))
+          (swap! doc assoc-in [:errors :first-name]"first name is empty"))}
+      ((get-page-dom (:menu-page @doc)) doc)]]))
 
 (defn main []
   (r/render-component [page] (.getElementById js/document "app")))
