@@ -13,7 +13,7 @@
                  [enlive "1.1.5"]
                  [om "0.7.3"]
                  [reagent "0.4.3"]
-                 [reagent-forms "0.2.6"]
+                 [reagent-forms "0.2.9"]
                  [json-html "0.2.3"]
                  [figwheel "0.1.6-SNAPSHOT"]
                  [environ "1.0.0"]

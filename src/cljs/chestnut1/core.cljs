@@ -10,26 +10,14 @@
    [:div.col-xs-2 [:label label]]
    [:div.col-xs-10 input]])
 
-(defn radio [label id name value]
-  [:div.radio
-   [:label
-    [:input {:field :radio :id id :name name :value value}]
-    label]])
-
 (defn input [label type id]
   (row label [:input.form-control {:field type :id id}]))
 
-(defn bad-email? [s]
-  ;; Derived from http://www.dotnet-tricks.com/Tutorial/javascript/UNDS040712-JavaScript-Email-Address-validation-using-Regular-Expression.html
-  (not (.exec (js/RegExp. "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$") s)))
-
 (defn errmsg-bar [id event message]
   [:div.row
-   [:div.col-xs-2]
-   [:div.col-xs-10
-    [:div.alert.alert-danger
-     {:field :alert :id id :event event}
-     message]]])
+   [:div.alert.alert-danger
+    {:field :alert :id id :event event}
+    message]])
 
 (defn errchecked-input [label type id & err-handlers]
   [:div
@@ -37,98 +25,88 @@
    (doall (map #(apply errmsg-bar id %) (partition 2 err-handlers)))])
 
 
-(defn header-dom [doc]
-  [:h1 "My web page"])
+(def the-doc (r/atom {:user {:first-name "John"
+                             :last-name "Smith"
+                             :email "JSmith@zmail.com"
+                             :user-id ""
+                             }
+                      :clicker 0
+                      :page-header "My web page"
+                      :menu-page :app}))
 
-(defn menu-dom [doc]
+
+(defn counting-component [doc]
+  [:div
+   "The atom " [:code "clicker"] " has value: "
+   (:clicker @doc) ". "
+   [:input {:type "button" :value "Click me!"
+            :on-click #(swap! doc update-in [:clicker] inc)}]])
+
+(defn header-dom [doc]
+  [:div
+   [:h1 (:page-header @doc)]
    [:div.btn-group {:field :single-select :id :menu-page}
     [:button.btn.btn-default {:key :app} "App"]
     [:button.btn.btn-default {:key :user} "User"]
-    [:button.btn.btn-default {:key :guts} "Guts"]])
+    [:button.btn.btn-default {:key :guts} "Guts"]]])
 
-
-(defn app-dom [doc]
+(defn app-page-dom [doc]
   [:div
-   [:h1 "I am the app; I am the walrus"][:hr]
-   [:hr]
-   (input "kg" :numeric :weight-kg)
-   (input "lb" :numeric :weight-lb)
-   [:hr]
-   [:h3 "BMI Calculator"]
-   (input "height" :numeric :height)
-   (input "weight" :numeric :weight)
-   (row "BMI"
-        [:input.form-control
-         {:field :numeric :fmt "%.2f" :id :bmi :disabled true}])
-   ])
+   [:h1 "APP "]
+   [counting-component the-doc]
+   (errchecked-input "last name" :text :user.last-name
+                     empty?  "Last name is empty!")])
 
-
-(defn user-dom [doc]
+(defn user-page-dom [doc]
   [:div
-   (errchecked-input "first name" :text :person.first-name
-                     empty? "First name is empty"
-                     #(< (js/parseInt %) 18) "You must be over 18"
-                     #(= % "John") "No johns allowed here")
+   [:h1 "USER"]
+   [counting-component the-doc]
+   (errchecked-input "last name" :text :user.last-name
+                     empty?  "Last name is empty!")])
 
-   (errchecked-input "last name" :text :person.last-name
-                     empty?  "Last name is empty!")
-
-   (errchecked-input "age" :numeric :person.age
-                     #(empty? (str %)) "Please supply your age"
-                     #(< % 18) "You must be over 18"
-                     #(>= % 100) "Sorry, too old to play")
-
-   (errchecked-input "email" :email :person.email
-                     bad-email? "Invalid email address")])
-
-(defn guts-dom [doc]
+(defn one-page-dom [doc]
   [:div
-   [:hr]
-   [:h1 "Document State"]
-   [edn->hiccup @doc]])
+   [:div {:class (when (and true (not= :app (:menu-page @doc))) "hidden")}
+    (app-page-dom doc)]
+   [:div {:class (when (and true (not= :user (:menu-page @doc))) "hidden")}
+    ;; Playing around... embedding one page as a vector, one as a form, and one
+    ;; inline. All seem to behave the same.
+    [user-page-dom doc]]
+   [:div {:class (when (and true (not= :guts (:menu-page @doc))) "hidden")}
+    [:h1 "GUTS"]
+    [counting-component the-doc]
+    (errchecked-input "last name" :text :user.last-name
+                      empty?  "Last name is empty!")]])
 
-(defn page-dom [doc menu-key]
-  [:div {:key (str "page-" (menu-key @doc))}
-   (case (menu-key @doc)
-     :app (app-dom doc)
-     :user (user-dom doc)
-     :guts (guts-dom doc))])
 
 (defn page []
-  (let [doc (r/atom {:person {:first-name "John"
-                              :age 35
-                              :email "foo@bar.baz"}
-                     :weight 100
-                     :height 200
-                     :bmi 0.5
-                     :menu-page :guts})]
-    (fn []
-      (js/console.log "DIV: "
-                      (str [:div
-                            (header-dom doc)
-                            (menu-dom doc)
-                            [page-dom doc :menu-page]]))
-      [:div.container-fluid
-       [:div.row-fluid
-        [:div.span6
-         [forms/bind-fields
-          [:div
-           (header-dom doc)
-           (menu-dom doc)
-           [page-dom doc :menu-page]]
-          doc
-          (fn [[id] value document]
-            (cond
-             (= id :weight-lb)
-             (assoc document :weight-kg (/ value 2.2046))
-             (= id :weight-kg)
-             (assoc document :weight-lb (* value 2.2046))
-             (= id :menu-page)
-             (assoc document :menu-page value)
-             :else nil))
-          (fn [[id] value {:keys [height weight] :as document}]
-            (when (and (some #{id} [:height :weight]) weight height)
-              (assoc document :bmi (/ weight (* height height)))))]]]])))
+  (fn []
+    [forms/bind-fields
+     [:div
+      (header-dom the-doc)
+      ;; Two input boxes, sharing state. This works
+      (errchecked-input "last name" :text :user.last-name
+                        empty?  "Last name is empty!")
+      
+      (errchecked-input "last name" :text :user.last-name
+                        empty?  "Last name is empty!")
+
+;;;  MAIN QUESTION IS OVER HERE
+      ;; This line, with one-page-dom in a vector, changes on menu clicks,
+      ;; but does not share the user.last-name state
+      [one-page-dom the-doc]
+      ;; This line, with it in a form, shares the state, but does not change
+      ;; when the menu is clicked.
+      ;; I am confused.
+      (one-page-dom the-doc)
+
+      ]
+     the-doc
+     (fn [[id] value document]
+       (cond
+        (= id :menu-page)
+        (assoc document :menu-page value)))]))
+
 
 (defn main []
   (r/render-component [page] (.getElementById js/document "app")))
