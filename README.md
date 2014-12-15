@@ -3,6 +3,46 @@
 (TL;DR) This is a small project, based on Chestnut, but modified to work with
 Reagent and key bits lifted from some of the reagent sample apps.
 
+## Getting started
+
+See the [Chestnut](https://github.com/plexus/chestnut) readme and
+documentation for general guidance. Note, though, that I built this
+from the Chestnut template a few weeks ago (November 2013), so things
+may have changed slightly.
+
+In broad strokes, you need to first start a repl: from a terminal:
+`lein repl`, or from Emacs: `M-x cider-jack-in`.
+
+In the REPL do
+
+```clojure
+(run)
+(browser-repl)
+```
+
+to kick things off.
+
+To alter the page state from the repl, try
+
+```
+(ns chestnut1.core)
+(swap! the-doc assoc-in [:user :last-name] "Johnson")
+```
+
+To deploy to Heroku (assuming you've already configured the Heroku
+tools on your machine):
+
+``` sh
+git push heroku master:master
+heroku open
+```
+
+Foreman
+
+``` sh
+lein with-profile -dev,+production uberjar && foreman start
+```
+
 ## Background
 
 This project began as my attempt to find a nice template for modern
@@ -62,45 +102,11 @@ Challenges included, I think:
   [my questions](https://github.com/reagent-project/reagent-forms/issues/30)).
 
 
-## Getting started
+## To do
 
-See the [Chestnut](https://github.com/plexus/chestnut) readme and
-documentation for general guidance. Note, though, that I built this
-from the Chestnut template a few weeks ago (November 2013), so things
-may have changed slightly.
+This is still very much a work in progress. Here are some things I
+still need to do:
 
-In broad strokes, you need to first start a repl: from a terminal:
-`lein repl`, or from Emacs: `M-x cider-jack-in`.
-
-In the REPL do
-
-```clojure
-(run)
-(browser-repl)
-```
-
-to kick things off.
-
-To alter the page state from the repl, try 
-
-```
-(ns chestnut1.core)
-(swap! the-doc assoc-in [:user :last-name] "Johnson")
-```
-
-To deploy to Heroku (assuming you've already configured the Heroku
-tools on your machine):
-
-``` sh
-git push heroku master:master
-heroku open
-```
-
-Foreman
-
-``` sh
-lein with-profile -dev,+production uberjar && foreman start
-```
 
 ## License
 
