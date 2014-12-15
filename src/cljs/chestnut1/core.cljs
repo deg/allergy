@@ -30,30 +30,42 @@
                              :email "JSmith@zmail.com"
                              :user-id ""
                              }
-                      :clicker 0
+                      :clicker1 0
+                      :clicker2 0
                       :page-header "My web page"
                       :menu-page :app}))
 
 
 (defn counting-component [doc]
   [:div
-   "The atom " [:code "clicker"] " has value: "
-   (:clicker @doc) ". "
-   [:input {:type "button" :value "Click me!"
-            :on-click #(swap! doc update-in [:clicker] inc)}]])
+   [:p
+    [:code "clicker1"] " has value: " (:clicker1 @doc) ". "
+    [:input {:type "button" :value "Click me!"
+             :on-click #(swap! doc update-in [:clicker1] inc)}]]
+   [:p
+    [:code "clicker2"] " has value: " (:clicker2 @doc) ". "
+    [:input {:type "button" :value "Click me!"
+             :on-click #(swap! doc update-in [:clicker2] inc)}]]
+   [:p "Advanced programming techniques reveal that their product is: "
+    (* (:clicker1 @doc) (:clicker2 @doc))]])
 
 (defn header-dom [doc]
-  [:div
-   [:h1 (:page-header @doc)]
-   [:div.btn-group {:field :single-select :id :menu-page}
-    [:button.btn.btn-default {:key :app} "App"]
-    [:button.btn.btn-default {:key :user} "User"]
-    [:button.btn.btn-default {:key :guts} "Guts"]]])
+  [forms/bind-fields
+   [:div
+    [:h1 {:field :label :id :page-header} (:page-header @doc)]
+    [:code "clicker1"] " has value: " (:clicker1 @doc) ". "
+    [:p (:page-header @doc)]
+
+    [:div.btn-group {:field :single-select :id :menu-page}
+     [:button.btn.btn-default {:key :app} "App"]
+     [:button.btn.btn-default {:key :user} "User"]
+     [:button.btn.btn-default {:key :guts} "Guts"]]]
+   doc])
 
 (defn app-page-dom [doc]
   [forms/bind-fields
    [:div
-    [:h1 "APP "]
+    [:h1 "The application "]
     [counting-component the-doc]
     (errchecked-input "last name" :text :user.last-name
                       empty?  "Last name is empty!")]
@@ -62,40 +74,39 @@
 (defn user-page-dom [doc]
   [forms/bind-fields
    [:div
-    [:h1 "USER"]
-    [counting-component the-doc]
+    [:h1 "User info"]
     (errchecked-input "last name" :text :user.last-name
                       empty?  "Last name is empty!")]
    doc])
 
+(defn guts-page-dom [doc]
+  [forms/bind-fields
+   [:div
+    [:h1 "State dump"]
+    [edn->hiccup @doc]]
+   doc])
+
 (defn one-page-dom [doc]
-  [:div
-   [:div {:class (when (and true (not= :app (:menu-page @doc))) "hidden")}
-    (app-page-dom doc)]
-   [:div {:class (when (and true (not= :user (:menu-page @doc))) "hidden")}
-    ;; Playing around... embedding one page as a vector, one as a form, and one
-    ;; inline. All seem to behave the same.
-    [user-page-dom doc]]
-   [:div {:class (when (and true (not= :guts (:menu-page @doc))) "hidden")}
-    [:h1 "GUTS"]
-    [counting-component the-doc]
-    (errchecked-input "last name" :text :user.last-name
-                      empty?  "Last name is empty!")]])
+  (case (:menu-page @doc)
+    :app
+    [app-page-dom doc]
+
+    :user
+    [user-page-dom doc]
+
+    :guts
+    [guts-page-dom doc]
+
+    [:div
+     [:h3 "Button error?"]
+     [:p "Missing :menu-page when clicked on current page: "]
+     [:p "State is: " [:code (str @doc)]]]))
 
 
 (defn page []
-  (fn []
-    [forms/bind-fields
-     [:div
-      (header-dom the-doc)
-      (errchecked-input "last name" :text :user.last-name
-                        empty?  "Last name is empty!")
-      [one-page-dom the-doc]]
-     the-doc
-     (fn [[id] value document]
-       (cond
-        (= id :menu-page)
-        (assoc document :menu-page value)))]))
+  [:div
+   [header-dom the-doc]
+   [one-page-dom the-doc]])
 
 
 (defn main []
