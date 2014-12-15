@@ -59,8 +59,12 @@
   [forms/bind-fields
    [:div.row-fluid
     [:h1 {:field :label :id :page-header} (:page-header @doc)]
+    [:p [:em "Problem 1: Increment clicker1 via the 'click me' button below. Location 1 does not change. Why? Compare this to location 2, below, which works properly and location 3, which fails almost like here."]]
     [:div  "Location 1: clicker1 here is " (:clicker1 @doc) " of doc " (str @doc) ". "]
     [:p (:page-header @doc)]
+
+        [:p [:em "Problem 2. Click on a button twice, and the page id becomes nil."]]
+
 
     [:div.btn-group {:field :single-select :id :menu-page}
      [:button.btn.btn-default {:key :app} "App"]
@@ -72,6 +76,7 @@
   [forms/bind-fields
    [:div
     [:h1 "The application "]
+    [:p [:em "Location 3 fails to update, like location 1. But click on a different menu buton and then back on app, and it does get refreshed. Looks like the sync is ignored, but refresh happens when the whole component is reloaded."]]
     [:div  "Location 3: clicker1 here is " (:clicker1 @doc) " of doc " (str @doc) ". "]
     [counting-component doc]
     (errchecked-input "last name" :text :user.last-name
@@ -105,6 +110,7 @@
 
 (defn one-page-dom [doc]
   [:div.row-fluid
+    [:p [:em "Location 2 shows the state being updated in sync."]]
     [:div  "Location 2: clicker1 here is " (:clicker1 @doc) " of doc " (str @doc) ". "]
    (case (:menu-page @doc)
      :app
