@@ -73,7 +73,7 @@
    [:div
     [:h1 "The application "]
     [:div  "Location 3: clicker1 here is " (:clicker1 @doc) " of doc " (str @doc) ". "]
-    [counting-component the-doc]
+    [counting-component doc]
     (errchecked-input "last name" :text :user.last-name
                       empty?  "Last name is empty!")]
    doc])
