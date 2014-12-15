@@ -51,18 +51,22 @@
     [:button.btn.btn-default {:key :guts} "Guts"]]])
 
 (defn app-page-dom [doc]
-  [:div
-   [:h1 "APP "]
-   [counting-component the-doc]
-   (errchecked-input "last name" :text :user.last-name
-                     empty?  "Last name is empty!")])
+  [forms/bind-fields
+   [:div
+    [:h1 "APP "]
+    [counting-component the-doc]
+    (errchecked-input "last name" :text :user.last-name
+                      empty?  "Last name is empty!")]
+   doc])
 
 (defn user-page-dom [doc]
-  [:div
-   [:h1 "USER"]
-   [counting-component the-doc]
-   (errchecked-input "last name" :text :user.last-name
-                     empty?  "Last name is empty!")])
+  [forms/bind-fields
+   [:div
+    [:h1 "USER"]
+    [counting-component the-doc]
+    (errchecked-input "last name" :text :user.last-name
+                      empty?  "Last name is empty!")]
+   doc])
 
 (defn one-page-dom [doc]
   [:div
@@ -84,23 +88,9 @@
     [forms/bind-fields
      [:div
       (header-dom the-doc)
-      ;; Two input boxes, sharing state. This works
       (errchecked-input "last name" :text :user.last-name
                         empty?  "Last name is empty!")
-      
-      (errchecked-input "last name" :text :user.last-name
-                        empty?  "Last name is empty!")
-
-;;;  MAIN QUESTION IS OVER HERE
-      ;; This line, with one-page-dom in a vector, changes on menu clicks,
-      ;; but does not share the user.last-name state
-      [one-page-dom the-doc]
-      ;; This line, with it in a form, shares the state, but does not change
-      ;; when the menu is clicked.
-      ;; I am confused.
-      (one-page-dom the-doc)
-
-      ]
+      [one-page-dom the-doc]]
      the-doc
      (fn [[id] value document]
        (cond
