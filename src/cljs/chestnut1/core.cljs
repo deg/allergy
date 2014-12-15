@@ -15,9 +15,16 @@
 
 (defn errmsg-bar [id event message]
   [:div.row
-   [:div.alert.alert-danger
-    {:field :alert :id id :event event}
-    message]])
+   [:div.col-xs-2]
+   [:div.col-xs-10
+    [:div.alert.alert-danger
+     {:field :alert :id id :event event}
+     message]]])
+
+(defn bad-email? [s]
+  ;; Derived from
+  ;; http://www.dotnet-tricks.com/Tutorial/javascript/UNDS040712-JavaScript-Email-Address-validation-using-Regular-Expression.html
+  (not (.exec (js/RegExp. "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$") s)))
 
 (defn errchecked-input [label type id & err-handlers]
   [:div
@@ -35,25 +42,24 @@
                       :page-header "My web page"
                       :menu-page :app}))
 
+(defn clicker-component [doc id]
+   [:p
+    [:code (str id)] " has value: " (id @doc) ". "
+    [:input {:type "button" :value "Click me!"
+             :on-click #(swap! doc update-in [id] inc)}]])
 
 (defn counting-component [doc]
   [:div
-   [:p
-    [:code "clicker1"] " has value: " (:clicker1 @doc) ". "
-    [:input {:type "button" :value "Click me!"
-             :on-click #(swap! doc update-in [:clicker1] inc)}]]
-   [:p
-    [:code "clicker2"] " has value: " (:clicker2 @doc) ". "
-    [:input {:type "button" :value "Click me!"
-             :on-click #(swap! doc update-in [:clicker2] inc)}]]
+   [clicker-component doc :clicker1]
+   [clicker-component doc :clicker2]
    [:p "Advanced programming techniques reveal that their product is: "
     (* (:clicker1 @doc) (:clicker2 @doc))]])
 
 (defn header-dom [doc]
   [forms/bind-fields
-   [:div
+   [:div.row-fluid
     [:h1 {:field :label :id :page-header} (:page-header @doc)]
-    [:code "clicker1"] " has value: " (:clicker1 @doc) ". "
+    [:div  "Location 1: clicker1 here is " (:clicker1 @doc) " of doc " (str @doc) ". "]
     [:p (:page-header @doc)]
 
     [:div.btn-group {:field :single-select :id :menu-page}
@@ -66,6 +72,7 @@
   [forms/bind-fields
    [:div
     [:h1 "The application "]
+    [:div  "Location 3: clicker1 here is " (:clicker1 @doc) " of doc " (str @doc) ". "]
     [counting-component the-doc]
     (errchecked-input "last name" :text :user.last-name
                       empty?  "Last name is empty!")]
@@ -75,8 +82,18 @@
   [forms/bind-fields
    [:div
     [:h1 "User info"]
-    (errchecked-input "last name" :text :user.last-name
-                      empty?  "Last name is empty!")]
+    (errchecked-input "first name" :text :user.first-name
+                     empty? "First name is empty"
+                     #(< (js/parseInt %) 18) "You must be over 18"
+                     #(= % "John") "No johns allowed here")
+   (errchecked-input "last name" :text :user.last-name
+                     empty?  "Last name is empty!")
+   (errchecked-input "age" :numeric :user.age
+                     #(empty? (str %)) "Please supply your age"
+                     #(< % 18) "You must be over 18"
+                     #(>= % 100) "Sorry, too old to play")
+   (errchecked-input "email" :email :user.email
+                     bad-email? "Invalid email address")]
    doc])
 
 (defn guts-page-dom [doc]
@@ -87,26 +104,33 @@
    doc])
 
 (defn one-page-dom [doc]
-  (case (:menu-page @doc)
-    :app
-    [app-page-dom doc]
+  [:div.row-fluid
+    [:div  "Location 2: clicker1 here is " (:clicker1 @doc) " of doc " (str @doc) ". "]
+   (case (:menu-page @doc)
+     :app
+     [app-page-dom doc]
 
-    :user
-    [user-page-dom doc]
+     :user
+     [user-page-dom doc]
 
-    :guts
-    [guts-page-dom doc]
+     :guts
+     [guts-page-dom doc]
 
-    [:div
-     [:h3 "Button error?"]
-     [:p "Missing :menu-page when clicked on current page: "]
-     [:p "State is: " [:code (str @doc)]]]))
+     [:div
+      [:h3 "Button error?"]
+      [:p "Missing :menu-page when clicked on current page: "]
+      [:p "State is: " [:code (str @doc)]]])])
 
 
 (defn page []
-  [:div
-   [header-dom the-doc]
-   [one-page-dom the-doc]])
+  (fn []
+    [forms/bind-fields
+     [:div.container-fluid
+      [:div.row-fluid
+       [:div.span9
+        [header-dom the-doc]
+        [one-page-dom the-doc]]]]
+     the-doc]))
 
 
 (defn main []
