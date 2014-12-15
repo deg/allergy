@@ -107,6 +107,10 @@ Challenges included, I think:
 This is still very much a work in progress. Here are some things I
 still need to do:
 
+- Really understand what's going on with React, Reagent,
+  Reagent-fields, and even Bootstrap. The sad truth is that I don't
+  really understand any of the underlying details yet.
+- Integrate a testing framework
 
 ## License
 
