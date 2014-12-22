@@ -34,5 +34,9 @@
     (global-put! :current-page (pages :new-page))
     (global-put! :nav "new"))
 
+  (defroute "/user" []
+    (global-put! :current-page (pages :user-page))
+    (global-put! :nav "user"))
+
   (hook-browser-navigation!)
 )

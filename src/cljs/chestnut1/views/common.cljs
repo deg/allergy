@@ -14,5 +14,6 @@
     [:ul.nav.nav-pills 
      [:li {:class (active? (global-state :nav) "home")}  [:a {:href "#/"} [:span [:i.fa.fa-home] " Home"]]]
      [:li {:class (active? (global-state :nav) "about")} [:a {:href "#/about"} "About"]]
-     [:li {:class (active? (global-state :nav) "new")} [:a {:href "#/new"} "New Page"]]]]
+     [:li {:class (active? (global-state :nav) "new")} [:a {:href "#/new"} "New Page"]]
+     [:li {:class (active? (global-state :nav) "user")} [:a {:href "#/user"} "User Page"]]]]
    ])
