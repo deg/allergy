@@ -11,7 +11,7 @@
                  [ring "1.3.2"]
                  [compojure "1.2.2"]
                  [enlive "1.1.5"]
-                 [om "0.8.0-beta4"]
+                 ;;[om "0.8.0-beta4"]
                  ;; ReactJS wrapper
                  [reagent "0.5.0-alpha"]
                  [reagent-forms "0.2.9"]
@@ -36,8 +36,8 @@
                              :compiler {:output-to     "resources/public/js/app.js"
                                         :output-dir    "resources/public/js/out"
                                         :source-map    "resources/public/js/out.js.map"
-                                        :preamble      ["react/react.min.js"]
-                                        :externs       ["react/externs/react.js"]
+                                        ;:preamble      ["reagent/react.min.js"]
+                                        ;:externs       ["react/externs/react.js"]
                                         :optimizations :none
                                         :pretty-print  true}}}}
 
