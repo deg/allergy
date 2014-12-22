@@ -11,7 +11,7 @@
                  [ring "1.3.2"]
                  [compojure "1.2.2"]
                  [enlive "1.1.5"]
-                 [om "0.7.3"]
+                 [om "0.8.0-beta4"]
                  [reagent "0.5.0-alpha"]
                  [reagent-forms "0.2.9"]
                  [json-html "0.2.3"]
