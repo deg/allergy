@@ -12,8 +12,11 @@
                  [compojure "1.2.2"]
                  [enlive "1.1.5"]
                  [om "0.8.0-beta4"]
+                 ;; ReactJS wrapper
                  [reagent "0.5.0-alpha"]
                  [reagent-forms "0.2.9"]
+                 ;; Client-side routing
+                 [secretary "1.2.0"]
                  [json-html "0.2.3"]
                  [figwheel "0.1.6-SNAPSHOT"]
                  [environ "1.0.0"]

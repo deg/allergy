@@ -4,6 +4,9 @@
             [reagent.core :as r]
             [reagent-forms.core :as forms]
             [chestnut1.app-page :as app]
+            [chestnut1.session :as session :refer [global-state]]
+            [chestnut1.routes :as routes]
+            [chestnut1.views.common :as common]
             [chestnut1.user-page :as user]))
 
 (def the-page-wrapper (r/atom {:page-header "My web page"
@@ -50,5 +53,14 @@
            [:p "State is: " [:code (str @the-page-wrapper)]]])]]]]))
 
 
+(defn page-render []
+  [:div.container
+   [common/header]
+   [(global-state :current-page)]])
+
+(defn page-component []
+  (r/create-class {:component-will-mount routes/app-routes
+                         :render page-render}))
+
 (defn main []
-  (r/render-component [page] (.getElementById js/document "app")))
+  (r/render-component [page-component] (.getElementById js/document "app")))
