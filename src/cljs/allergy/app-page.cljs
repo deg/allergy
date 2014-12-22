@@ -1,4 +1,4 @@
-(ns chestnut1.app-page
+(ns allergy.app-page
   (:require [reagent.core :as r]
             [reagent-forms.core :as forms]
             [json-html.core :refer [edn->hiccup]]))

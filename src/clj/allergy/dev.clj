@@ -1,4 +1,4 @@
-(ns chestnut1.dev
+(ns allergy.dev
   (:require [environ.core :refer [env]]
             [net.cgrand.enlive-html :refer [set-attr prepend append html]]
             [cemerick.piggieback :as piggieback]
@@ -13,7 +13,7 @@
      (prepend (html [:script {:type "text/javascript" :src "/js/out/goog/base.js"}]))
      (prepend (html [:script {:type "text/javascript" :src "/react/react.js"}]))
      ; (prepend (html [:script {:type "text/javascript" :src "/reagent/react.js"}]))
-     (append  (html [:script {:type "text/javascript"} "goog.require('chestnut1.dev')"]))))
+     (append  (html [:script {:type "text/javascript"} "goog.require('allergy.dev')"]))))
 
 (defn browser-repl []
   (piggieback/cljs-repl :repl-env (weasel/repl-env :ip "0.0.0.0" :port 9001)))

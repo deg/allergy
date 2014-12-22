@@ -1,7 +1,7 @@
-(ns chestnut1.routes
+(ns allergy.routes
   (:require   [secretary.core :as secretary :refer-macros [defroute]]
-              [chestnut1.session :as session :refer [global-put!]]
-              [chestnut1.views.pages :refer [pages]]
+              [allergy.session :as session :refer [global-put!]]
+              [allergy.views.pages :refer [pages]]
               [goog.events :as events]
               [goog.history.EventType :as EventType])
     (:import goog.History))

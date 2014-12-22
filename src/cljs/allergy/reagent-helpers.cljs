@@ -1,4 +1,4 @@
-(ns chestnut1.reagent-helpers
+(ns allergy.reagent-helpers
   (:require [clojure.string :as string]
             [reagent.core :as r]
             [reagent-forms.core :as forms]))

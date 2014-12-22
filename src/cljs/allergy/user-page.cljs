@@ -1,8 +1,8 @@
-(ns chestnut1.user-page
+(ns allergy.user-page
   (:require [clojure.string :as string]
             [reagent.core :as r]
             [reagent-forms.core :as forms]
-            [chestnut1.reagent-helpers :as helpers]
+            [allergy.reagent-helpers :as helpers]
             [json-html.core :refer [edn->hiccup]]))
 
 (def the-user (r/atom {:user {:first-name "John"

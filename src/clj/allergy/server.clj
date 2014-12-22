@@ -1,6 +1,6 @@
-(ns chestnut1.server
+(ns allergy.server
   (:require [clojure.java.io :as io]
-            [chestnut1.dev :refer [is-dev? inject-devmode-html browser-repl start-figwheel]]
+            [allergy.dev :refer [is-dev? inject-devmode-html browser-repl start-figwheel]]
             [compojure.core :refer [GET defroutes]]
             [compojure.route :refer [resources]]
             [compojure.handler :refer [api]]

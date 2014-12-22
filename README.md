@@ -3,11 +3,21 @@
 (TL;DR) This is a small project, based on Chestnut, but modified to work with
 Reagent and key bits lifted from some of the reagent sample apps.
 
+## The name
+
+Why ""allergy""?
+
+I'm not thrilled about the name, but I wanted something that would tie
+together "react" and "chestnut". Granted, chestnuts aren't peanuts,
+and peanuts aren't even nuts, but with allergic reactions to peanuts
+being so common, I figured this name kind of works.
+
+
 ## Getting started
 
 See the [Chestnut](https://github.com/plexus/chestnut) readme and
 documentation for general guidance. Note, though, that I built this
-from the Chestnut template a few weeks ago (November 2013), so things
+from the Chestnut template a few weeks ago (November 2014), so things
 may have changed slightly.
 
 In broad strokes, you need to first start a repl: from a terminal:
@@ -25,7 +35,7 @@ to kick things off.
 To alter the page state from the repl, try
 
 ```
-(ns chestnut1.core)
+(ns allergy.core)
 (swap! the-doc assoc-in [:user :last-name] "Johnson")
 ```
 

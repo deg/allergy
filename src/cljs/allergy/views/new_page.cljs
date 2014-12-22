@@ -1,4 +1,4 @@
-(ns chestnut1.views.new-page)
+(ns allergy.views.new-page)
 
 (defn new-page []
   [:div

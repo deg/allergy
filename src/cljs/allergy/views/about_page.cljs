@@ -1,4 +1,4 @@
-(ns chestnut1.views.about-page)
+(ns allergy.views.about-page)
 
 (defn about-page []
   [:div

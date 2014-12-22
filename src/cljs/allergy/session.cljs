@@ -1,4 +1,4 @@
-(ns chestnut1.session
+(ns allergy.session
   (:require [reagent.core :as reagent :refer [atom]]))
 
 

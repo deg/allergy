@@ -1,4 +1,4 @@
-(defproject chestnut1 "0.1.0-SNAPSHOT"
+(defproject allergy "0.1.0-SNAPSHOT"
   :description "Toy CLJS project using Chestnut"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -30,7 +30,7 @@
 
   :min-lein-version "2.5.0"
 
-  :uberjar-name "chestnut1.jar"
+  :uberjar-name "allergy.jar"
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/js/app.js"
@@ -41,7 +41,7 @@
                                         :optimizations :none
                                         :pretty-print  true}}}}
 
-  :profiles {:dev {:repl-options {:init-ns chestnut1.server
+  :profiles {:dev {:repl-options {:init-ns allergy.server
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
                    :plugins [[lein-figwheel "0.1.6-SNAPSHOT"]]

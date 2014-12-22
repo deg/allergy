@@ -1,5 +1,5 @@
-(ns chestnut1.views.common
-  (:require  [chestnut1.session :as session :refer [global-state]]))
+(ns allergy.views.common
+  (:require  [allergy.session :as session :refer [global-state]]))
 
 (defn active? [state val]
   (if (= state val) "active" ""))

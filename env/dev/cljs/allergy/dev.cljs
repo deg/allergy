@@ -1,5 +1,5 @@
-(ns chestnut1.dev
-  (:require [chestnut1.core :as core]
+(ns allergy.dev
+  (:require [allergy.core :as core]
             [figwheel.client :as figwheel :include-macros true]
             [cljs.core.async :refer [put!]]
             [weasel.repl :as weasel]))

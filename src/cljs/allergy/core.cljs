@@ -1,13 +1,13 @@
-(ns chestnut1.core
+(ns allergy.core
   (:require [clojure.string :as string]
             [json-html.core :refer [edn->hiccup]]
             [reagent.core :as r]
             [reagent-forms.core :as forms]
-            [chestnut1.app-page :as app]
-            [chestnut1.session :as session :refer [global-state]]
-            [chestnut1.routes :as routes]
-            [chestnut1.views.common :as common]
-            [chestnut1.user-page :as user]))
+            [allergy.app-page :as app]
+            [allergy.session :as session :refer [global-state]]
+            [allergy.routes :as routes]
+            [allergy.views.common :as common]
+            [allergy.user-page :as user]))
 
 (def the-page-wrapper (r/atom {:page-header "My web page"
                                :menu-page :app}))

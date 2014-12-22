@@ -1,4 +1,4 @@
-(ns chestnut1.views.home-page)
+(ns allergy.views.home-page)
 
 (defn home-page []
   [:div
