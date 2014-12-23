@@ -12,8 +12,8 @@
                  [compojure "1.2.2"]
                  [enlive "1.1.5"]
                  ;; ReactJS wrapper
-                 [com.facebook/react "0.12.1"]
-                 [reagent "0.5.0-alpha"]
+                 [com.facebook/react "0.11.2"]
+                 [reagent "0.4.3"]
                  [reagent-forms "0.2.9"]
                  ;; Client-side routing
                  [secretary "1.2.0"]
