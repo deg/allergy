@@ -18,7 +18,7 @@
     [:code (str id)] " has value: "
     [:input {:type "button" :value (get-in @doc id)
              :on-click #(swap! doc update-in id inc)}]
-    " (click to increment)."])
+    [:em " (click to increment)"]])
 
 
 (defn math-app [doc]
@@ -28,20 +28,12 @@
    [:p "Advanced programming techniques reveal that their product is: "
     (* (:clicker1 @doc) (:clicker2 @doc))]])
 
-(defn test-component []
-  [:div
-   [:em "External syncs. Clicker1="]
-   (:clicker1 @the-app)])
+(def data)
 
 
 (defn page-dom []
   [forms/bind-fields
    [:div
     [:h1 "The application "]
-    [:div
-     [:em "Problem 2:"]
-     [test-component]
-     [:em "But, direct fails, does not sync until you go back to this page. Clicker1="]
-     (:clicker1 @the-app)]
     [math-app the-app]]
    the-app])
