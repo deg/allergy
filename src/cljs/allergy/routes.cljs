@@ -38,5 +38,9 @@
     (global-put! :current-page (pages :user-page))
     (global-put! :nav "user"))
 
+  (defroute "/app" []
+    (global-put! :current-page (pages :app-page))
+    (global-put! :nav "app"))
+
   (hook-browser-navigation!)
 )

@@ -1,7 +1,6 @@
 (ns allergy.views.new-page)
 
-(defn new-page []
+(defn page-dom []
   [:div
    [:h2 "New Page"]
-   [:div "This is our brand new page!"]
-   ])
+   [:div "This is our brand new page!"]])

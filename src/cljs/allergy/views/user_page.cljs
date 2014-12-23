@@ -1,4 +1,4 @@
-(ns allergy.user-page
+(ns allergy.views.user-page
   (:require [clojure.string :as string]
             [reagent.core :as r]
             [reagent-forms.core :as forms]

@@ -1,7 +1,5 @@
 (ns allergy.views.home-page)
 
-(defn home-page []
+(defn page-dom []
   [:div
-   [:h2 "Home Page"]
-
-   ])
+   [:h2 "Home Page"]])

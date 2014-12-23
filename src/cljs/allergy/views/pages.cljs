@@ -1,10 +1,12 @@
 (ns allergy.views.pages
-  (:require [allergy.views.home-page :refer [home-page]]
-            [allergy.views.about-page :refer [about-page]]
-            [allergy.views.new-page :refer [new-page]]
-            [allergy.user-page :refer [page-dom]]))
+  (:require allergy.views.home-page
+            allergy.views.about-page
+            allergy.views.new-page
+            allergy.views.user-page
+            allergy.views.app-page))
 
-(def pages {:home-page home-page
-            :about-page about-page
-            :new-page new-page
-            :user-page page-dom})
+(def pages {:home-page  allergy.views.home-page/page-dom
+            :about-page allergy.views.about-page/page-dom
+            :new-page   allergy.views.new-page/page-dom
+            :user-page  allergy.views.user-page/page-dom
+            :app-page   allergy.views.app-page/page-dom})

@@ -1,7 +1,5 @@
 (ns allergy.views.about-page)
 
-(defn about-page []
+(defn page-dom []
   [:div
-   [:h2 "About Page"]
-
-   ])
+   [:h2 "About Page"]])

@@ -1,4 +1,4 @@
-(ns allergy.app-page
+(ns allergy.views.app-page
   (:require [reagent.core :as r]
             [reagent-forms.core :as forms]
             [json-html.core :refer [edn->hiccup]]))

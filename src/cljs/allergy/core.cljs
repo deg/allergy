@@ -3,11 +3,11 @@
             [json-html.core :refer [edn->hiccup]]
             [reagent.core :as r]
             [reagent-forms.core :as forms]
-            [allergy.app-page :as app]
             [allergy.session :as session :refer [global-state]]
             [allergy.routes :as routes]
             [allergy.views.common :as common]
-            [allergy.user-page :as user]))
+            [allergy.views.app-page :as app]
+            [allergy.views.user-page :as user]))
 
 (def the-page-wrapper (r/atom {:page-header "My web page"
                                :menu-page :app}))
