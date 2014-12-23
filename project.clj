@@ -11,8 +11,8 @@
                  [ring "1.3.2"]
                  [compojure "1.2.2"]
                  [enlive "1.1.5"]
-                 ;;[om "0.8.0-beta4"]
                  ;; ReactJS wrapper
+                 [com.facebook/react "0.12.1"]
                  [reagent "0.5.0-alpha"]
                  [reagent-forms "0.2.9"]
                  ;; Client-side routing
@@ -36,8 +36,8 @@
                              :compiler {:output-to     "resources/public/js/app.js"
                                         :output-dir    "resources/public/js/out"
                                         :source-map    "resources/public/js/out.js.map"
-                                        ;:preamble      ["reagent/react.min.js"]
-                                        ;:externs       ["react/externs/react.js"]
+                                        :preamble      ["react/react.min.js"]
+                                        :externs       ["react/externs/react.js"]
                                         :optimizations :none
                                         :pretty-print  true}}}}
 
