@@ -6,7 +6,14 @@
               [goog.history.EventType :as EventType])
     (:import goog.History))
 
-;; ----------
+
+
+;;; Page manager for single-page-app with client-side routing.
+;;; Mostly taken from reagent-cookbook
+;;; (https://github.com/reagent-project/reagent-cookbook/tree/master/recipes/adding-a-page)
+
+
+
 ;; History
 (defn hook-browser-navigation! []
   (doto (History.)
@@ -17,7 +24,7 @@
     (.setEnabled true)))
 ;; need to run this after routes have been defined
 
-;; ----------
+
 ;; Routes
 (defn app-routes []
   (secretary/set-config! :prefix "#")
@@ -42,5 +49,8 @@
     (global-put! :current-page (pages :app-page))
     (global-put! :nav "app"))
 
-  (hook-browser-navigation!)
-)
+  (defroute "/dumper" []
+    (global-put! :current-page (pages :dumper-page))
+    (global-put! :nav "dumper"))
+
+  (hook-browser-navigation!))

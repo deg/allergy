@@ -4,6 +4,10 @@
             [reagent-forms.core :as forms]))
 
 
+;;; Mostly taken from the reagent-forms examples.
+;;; Assumes bootstrap.
+
+
 (defn row [label input]
   [:div.row
    [:div.col-xs-2 [:label label]]
@@ -23,6 +27,8 @@
      message]]])
 
 
+;;; (Doesn't really belong here).
+;;; Simple email static validity checker.
 (defn bad-email? [s]
   ;; Derived from
   ;; http://www.dotnet-tricks.com/Tutorial/javascript/
@@ -30,7 +36,9 @@
   (not (.exec (js/RegExp. "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$") s)))
 
 
+
 ;;; Build an input field, and add one or more error-checkers to it.
+;;;
 ;;; For example:
 ;;;  (errchecked-input "age" :numeric :user.age
 ;;;     #(< % 18)   "You must be over 18"
