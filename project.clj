@@ -34,9 +34,7 @@
 
   :template-additions [".gitignore"
                        "README.md"
-                       "env/dev/cljs/allergy/dev.cljs"
-                       "env/prod/cljs/allergy/prod.cljs"
-                       ]
+                       "env"]
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/js/app.js"
