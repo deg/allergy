@@ -1,11 +1,16 @@
 # Sample using reagent in a single-page-app
 
-(TL;DR) This is a small project, based on Chestnut, but modified to work with
-Reagent and key bits lifted from some of the reagent sample apps.
+(TL;DR) This is a template for single-page ClojureScript apps, using
+the Reagent interface library to Facebook React and a rich set of other
+useful libraries.
+
+Allergy is strongly based on Chestnut, but modified to work with
+Reagent rather than Om. It also lifts some key bits lifted from the
+reagent sample apps.
 
 ## The name
 
-Why ""allergy""?
+Why "allergy"?
 
 I'm not thrilled about the name, but I wanted something that would tie
 together "react" and "chestnut". Granted, chestnuts aren't peanuts,

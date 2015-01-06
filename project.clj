@@ -7,30 +7,36 @@
   :source-paths ["src/clj" "src/cljs"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2371" :scope "provided"]
+                 [org.clojure/clojurescript "0.0-2644" :scope "provided"]
                  [ring "1.3.2"]
                  [compojure "1.2.2"]
                  [enlive "1.1.5"]
                  ;; ReactJS wrapper
-                 [com.facebook/react "0.11.2"]
-                 [reagent "0.4.3"]
-                 [reagent-forms "0.2.9"]
+                 [com.facebook/react "0.12.2"]
+                 [reagent "0.5.0-alpha"]
+                 [reagent-forms "0.3.8"]
                  ;; Client-side routing
                  [secretary "1.2.0"]
                  [json-html "0.2.3"]
-                 [figwheel "0.1.6-SNAPSHOT"]
+                 [figwheel "0.1.7-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
                  [weasel "0.4.2"]
                  [leiningen "2.5.0"]]
 
-  :plugins [[cider/cider-nrepl "0.8.1"]
+  :plugins [[cider/cider-nrepl "0.9.0-SNAPSHOT"]
             [lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]]
 
   :min-lein-version "2.5.0"
 
   :uberjar-name "allergy.jar"
+
+  :template-additions [".gitignore"
+                       "README.md"
+                       "env/dev/cljs/allergy/dev.cljs"
+                       "env/prod/cljs/allergy/prod.cljs"
+                       ]
 
   :cljsbuild {:builds {:app {:source-paths ["src/cljs"]
                              :compiler {:output-to     "resources/public/js/app.js"
