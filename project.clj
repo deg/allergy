@@ -7,17 +7,17 @@
   :source-paths ["src/clj" "src/cljs"]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2644" :scope "provided"]
+                 [org.clojure/clojurescript "0.0-2657"]
                  [ring "1.3.2"]
-                 [compojure "1.2.2"]
+                 [compojure "1.3.1"]
                  [enlive "1.1.5"]
                  ;; ReactJS wrapper
                  [com.facebook/react "0.12.2"]
                  [reagent "0.5.0-alpha"]
-                 [reagent-forms "0.3.8"]
+                 [reagent-forms "0.3.9"]
                  ;; Client-side routing
-                 [secretary "1.2.0"]
-                 [json-html "0.2.3"]
+                 [secretary "1.2.1"]
+                 [json-html "0.2.7"]
                  [figwheel "0.1.7-SNAPSHOT"]
                  [environ "1.0.0"]
                  [com.cemerick/piggieback "0.1.3"]
